@@ -3,6 +3,7 @@ package com.mrps.dscommerce.services;
 import com.mrps.dscommerce.dto.ProductDTO;
 import com.mrps.dscommerce.entities.Product;
 import com.mrps.dscommerce.repositories.ProductRepository;
+import com.mrps.dscommerce.services.exceptions.ResourceNotFoundException;
 import jakarta.persistence.Entity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -20,13 +21,8 @@ public class ProductService {
 
     @Transactional(readOnly = true)
     public ProductDTO findById(Long id){
-        Optional<Product> result = repository.findById(id);
-        if (result.isPresent()) {
-            Product product = result.get();
-            return new ProductDTO(product);
-        }
-        return null;
-
+        Product product = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Recurso não encontrado"));
+        return new ProductDTO(product);
     }
 
     @Transactional(readOnly = true)
@@ -47,7 +43,7 @@ public class ProductService {
 
     }
 
-    @Transactional()
+    @Transactional
     public ProductDTO update(ProductDTO productDTO, Long id) {
         Product product = repository.getReferenceById(id);
         copyDtoEntity(productDTO, product);
@@ -62,6 +58,11 @@ public class ProductService {
         entity.setPrice(productDTO.getPrice());
         entity.setImgURL(productDTO.getImgURL());
 
+    }
+
+    @Transactional
+    public void delete(Long id){
+        repository.deleteById(id);
     }
 
 }
