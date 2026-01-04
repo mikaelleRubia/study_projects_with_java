@@ -3,6 +3,7 @@ package com.mrps.dscommerce.services;
 import com.mrps.dscommerce.dto.ProductDTO;
 import com.mrps.dscommerce.entities.Product;
 import com.mrps.dscommerce.repositories.ProductRepository;
+import jakarta.persistence.Entity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,15 +39,29 @@ public class ProductService {
     @Transactional()
     public ProductDTO insert(ProductDTO productDTO) {
         Product product = new Product();
-
-        product.setName(productDTO.getName());
-        product.setDescription(productDTO.getDescription());
-        product.setPrice(productDTO.getPrice());
-        product.setImgURL(productDTO.getImgURL());
+        copyDtoEntity(productDTO, product);
 
         product = repository.save(product);
 
         return new ProductDTO(product);
 
     }
+
+    @Transactional()
+    public ProductDTO update(ProductDTO productDTO, Long id) {
+        Product product = repository.getReferenceById(id);
+        copyDtoEntity(productDTO, product);
+        product = repository.save(product);
+        return new ProductDTO(product);
+
+    }
+
+    public void copyDtoEntity(ProductDTO productDTO, Product entity){
+        entity.setName(productDTO.getName());
+        entity.setDescription(productDTO.getDescription());
+        entity.setPrice(productDTO.getPrice());
+        entity.setImgURL(productDTO.getImgURL());
+
+    }
+
 }
