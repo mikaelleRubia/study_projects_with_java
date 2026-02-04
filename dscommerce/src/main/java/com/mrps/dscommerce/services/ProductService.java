@@ -3,16 +3,16 @@ package com.mrps.dscommerce.services;
 import com.mrps.dscommerce.dto.ProductDTO;
 import com.mrps.dscommerce.entities.Product;
 import com.mrps.dscommerce.repositories.ProductRepository;
+import com.mrps.dscommerce.services.exceptions.DatabaseException;
 import com.mrps.dscommerce.services.exceptions.ResourceNotFoundException;
-import jakarta.persistence.Entity;
+import jakarta.persistence.EntityNotFoundException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ProductService {
@@ -45,11 +45,15 @@ public class ProductService {
 
     @Transactional
     public ProductDTO update(ProductDTO productDTO, Long id) {
-        Product product = repository.getReferenceById(id);
-        copyDtoEntity(productDTO, product);
-        product = repository.save(product);
-        return new ProductDTO(product);
-
+        try {
+            Product product = repository.getReferenceById(id);
+            copyDtoEntity(productDTO, product);
+            product = repository.save(product);
+            return new ProductDTO(product);
+        }
+        catch(EntityNotFoundException e){
+            throw new ResourceNotFoundException(" Recurso não encontrado");
+        }
     }
 
     public void copyDtoEntity(ProductDTO productDTO, Product entity){
@@ -60,9 +64,17 @@ public class ProductService {
 
     }
 
-    @Transactional
+    @Transactional(propagation = Propagation.SUPPORTS)
     public void delete(Long id){
-        repository.deleteById(id);
+        if(!repository.existsById(id)){
+            throw new ResourceNotFoundException(" Recurso não encontrado");
+        }
+        try{
+            repository.deleteById(id);
+        }
+        catch(DataIntegrityViolationException e){
+            throw new DatabaseException("Falha de integridade referencial");
+        }
     }
 
 }
