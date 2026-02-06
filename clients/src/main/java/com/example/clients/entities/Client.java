@@ -14,6 +14,7 @@ public class Client {
     private Long id;
 
     private String name;
+    @Column(unique = true)
     private String cpf;
     private Double income;
     private LocalDate bithDate;
