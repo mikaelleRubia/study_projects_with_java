@@ -1,0 +1,10 @@
+INSERT INTO tb_client (name, cpf, income, bith_date, children) VALUES ('Client 1', 12345678984, 2500,'1990-05-10', 2);
+INSERT INTO tb_client (name, cpf, income, bith_date, children) VALUES ('Client 2', 69010226034, 2700,'1990-05-10', 3);
+INSERT INTO tb_client (name, cpf, income, bith_date, children) VALUES ('Client 3', 58951555020, 9200,'1990-05-10', 2);
+INSERT INTO tb_client (name, cpf, income, bith_date, children) VALUES ('Client 4', 80296964000, 2700,'1990-05-10', 1);
+INSERT INTO tb_client (name, cpf, income, bith_date, children) VALUES ('Client 5', 47569029011, 1900,'1990-05-10', 0);
+INSERT INTO tb_client (name, cpf, income, bith_date, children) VALUES ('Client 6', 63858336076, 3100,'1990-05-10', 1);
+INSERT INTO tb_client (name, cpf, income, bith_date, children) VALUES ('Client 7', 09662507027, 3200,'1990-05-10',2);
+INSERT INTO tb_client (name, cpf, income, bith_date, children) VALUES ('Client 8', 82786810078, 2500,'1990-05-10', 3);
+INSERT INTO tb_client (name, cpf, income, bith_date, children) VALUES ('Client 9', 14483270087, 4200,'1990-05-10', 1);
+INSERT INTO tb_client (name, cpf, income, bith_date, children) VALUES ('Client 10', 19652130060, 5500,'1990-05-10', 0);
