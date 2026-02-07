@@ -1,5 +1,6 @@
 package com.example.clients.dto;
 
+import com.example.clients.entities.Client;
 import jakarta.persistence.Column;
 import jakarta.validation.constraints.*;
 
@@ -22,13 +23,13 @@ public class ClientDTO {
     private LocalDate bithDate;
     private Integer children;
 
-    public ClientDTO(Long id, String name, String cpf, Double income, LocalDate bithDate, Integer children) {
-        this.id = id;
-        this.name = name;
-        this.cpf = cpf;
-        this.income = income;
-        this.bithDate = bithDate;
-        this.children = children;
+    public ClientDTO(Client client) {
+        this.id = client.getId();
+        this.name = client.getName();
+        this.cpf = client.getCpf();
+        this.income = client.getIncome();
+        this.bithDate = client.getBithDate();
+        this.children = client.getChildren();
     }
 
     public ClientDTO() {}
